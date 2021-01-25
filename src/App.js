@@ -31,7 +31,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Container maxWidth="sm">
         <UsersList users={this.state.users} />
         <CreateUserForm onUserCreate={this.handleUserCreate} />
       </Container>
