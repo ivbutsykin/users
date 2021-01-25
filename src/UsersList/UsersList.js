@@ -2,14 +2,19 @@ import React from 'react';
 import List from '@material-ui/core/List';
 import UsersListItem from './UsersListItem/UsersListItem';
 
-class UsersList extends React.Component {
-  render() {
-    return (
-      <List>
-        <UsersListItem />
-      </List>
-    );
-  }
+function UsersList(props) {
+  return (
+    <List>
+      {props.users.map(user => (
+        <UsersListItem
+          key={user.id}
+          email={user.email}
+          name={user.name}
+          gender={user.gender}
+        />
+      ))}
+    </List>
+  );
 }
 
 export default UsersList;
