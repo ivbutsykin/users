@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
+import * as EmailValidator from 'email-validator';
 
 class CreateUserForm extends React.Component {
   state = {
@@ -56,7 +57,7 @@ class CreateUserForm extends React.Component {
       },
     });
 
-    email = this.validateEmail(email);
+    email = EmailValidator.validate(email);
     name = this.validateName(name);
     gender = this.validateGender(gender);
 
@@ -82,11 +83,6 @@ class CreateUserForm extends React.Component {
     }
     return true;
   };
-
-  validateEmail(email) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  }
 
   validateName(name) {
     const re = /^[A-Za-z\s]+$/;
