@@ -3,7 +3,7 @@ import Container from '@material-ui/core/Container';
 import UsersList from './UsersList/UsersList';
 import CreateUserForm from './CreateUserForm/CreateUserForm';
 import UserCard from './UserCard/UserCard';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 class App extends React.Component {
   state = {
@@ -11,10 +11,10 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    this.getUsersList();
+    this.handleGetUsersList();
   }
 
-  getUsersList = async () => {
+  handleGetUsersList = async () => {
     const response = await fetch('http://localhost:8080/users');
     const responseJson = await response.json();
     const data = await responseJson;
@@ -28,7 +28,7 @@ class App extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(fields),
-    }).then(() => this.getUsersList());
+    }).then(() => this.handleGetUsersList());
   };
 
   render() {
@@ -48,6 +48,7 @@ class App extends React.Component {
                   name={user.name}
                   gender={user.gender}
                   id={user.id}
+                  onGetUsersList={this.handleGetUsersList}
                 />
               </Route>
             ))}
