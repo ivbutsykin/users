@@ -47,7 +47,11 @@ class App extends React.Component {
             <Route
               path={`/users/:id`}
               render={props => (
-                <UserCard onGetUsersList={this.handleGetUsersList} {...props} />
+                <UserCard
+                  users={this.state.users}
+                  onGetUsersList={this.handleGetUsersList}
+                  {...props}
+                />
               )}
             />
           </Switch>
