@@ -57,7 +57,9 @@ class CreateUserForm extends React.Component {
       },
     });
 
-    email = EmailValidator.validate(email);
+    email =
+      EmailValidator.validate(email) &&
+      !this.props.users.some(user => user.email === email);
     name = this.validateName(name);
     gender = this.validateGender(gender);
 

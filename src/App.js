@@ -38,7 +38,10 @@ class App extends React.Component {
           <Switch>
             <Route exact path={'/'}>
               <UsersList users={this.state.users} />
-              <CreateUserForm onUserCreate={this.handleUserCreate} />
+              <CreateUserForm
+                onUserCreate={this.handleUserCreate}
+                users={this.state.users}
+              />
             </Route>
 
             <Route
