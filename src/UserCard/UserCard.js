@@ -15,7 +15,25 @@ import { Link } from 'react-router-dom';
 
 class UserCard extends React.Component {
   state = {
+    user: {},
     anchorEl: null,
+    isLoaded: false,
+  };
+
+  componentDidMount() {
+    this.handleGetUser();
+  }
+
+  handleGetUser = async () => {
+    const response = await fetch(
+      `http://localhost:8080/users/${this.props.match.params.id}`
+    );
+    const responseJson = await response.json();
+    const data = await responseJson;
+    this.setState({
+      user: data,
+      isLoaded: true,
+    });
   };
 
   handleClick = event => {
@@ -27,55 +45,61 @@ class UserCard extends React.Component {
   };
 
   handleClickDelete = () => {
-    fetch(`http://localhost:8080/users/${this.props.id}`, {
+    fetch(`http://localhost:8080/users/${this.props.match.params.id}`, {
       method: 'DELETE',
     }).then(() => this.props.onGetUsersList());
   };
 
   render() {
     const open = Boolean(this.state.anchorEl);
-
-    return (
-      <Card>
-        <CardHeader
-          avatar={<Avatar>{this.props.email[0].toUpperCase()}</Avatar>}
-          action={
-            <>
-              <IconButton onClick={this.handleClick}>
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                anchorEl={this.state.anchorEl}
-                open={open}
-                onClose={this.handleClose}
+    if (!this.state.isLoaded) {
+      return <div>Loading...</div>;
+    } else {
+      return (
+        <Card>
+          <CardHeader
+            avatar={<Avatar>{this.state.user.email[0].toUpperCase()}</Avatar>}
+            action={
+              <>
+                <IconButton onClick={this.handleClick}>
+                  <MoreVertIcon />
+                </IconButton>
+                <Menu
+                  anchorEl={this.state.anchorEl}
+                  open={open}
+                  onClose={this.handleClose}
+                >
+                  <Link
+                    to="/"
+                    style={{ textDecoration: 'none', color: 'black' }}
+                  >
+                    <MenuItem onClick={this.handleClickDelete}>Delete</MenuItem>
+                  </Link>
+                </Menu>
+              </>
+            }
+            title={this.state.user.email}
+          />
+          <CardContent>
+            <Typography>Name: {this.state.user.name}</Typography>
+            <Typography>Gender: {this.state.user.gender}</Typography>
+            <Typography>ID: {this.state.user.id}</Typography>
+          </CardContent>
+          <CardActions>
+            <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
+              <Button
+                variant="contained"
+                color="default"
+                size="small"
+                startIcon={<ArrowBackIcon />}
               >
-                <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
-                  <MenuItem onClick={this.handleClickDelete}>Delete</MenuItem>
-                </Link>
-              </Menu>
-            </>
-          }
-          title={this.props.email}
-        />
-        <CardContent>
-          <Typography>Name: {this.props.name}</Typography>
-          <Typography>Gender: {this.props.gender}</Typography>
-          <Typography>ID: {this.props.id}</Typography>
-        </CardContent>
-        <CardActions>
-          <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
-            <Button
-              variant="contained"
-              color="default"
-              size="small"
-              startIcon={<ArrowBackIcon />}
-            >
-              Back
-            </Button>
-          </Link>
-        </CardActions>
-      </Card>
-    );
+                Back
+              </Button>
+            </Link>
+          </CardActions>
+        </Card>
+      );
+    }
   }
 }
 

@@ -41,17 +41,12 @@ class App extends React.Component {
               <CreateUserForm onUserCreate={this.handleUserCreate} />
             </Route>
 
-            {this.state.users.map(user => (
-              <Route path={`/users/${user.id}`} key={user.id}>
-                <UserCard
-                  email={user.email}
-                  name={user.name}
-                  gender={user.gender}
-                  id={user.id}
-                  onGetUsersList={this.handleGetUsersList}
-                />
-              </Route>
-            ))}
+            <Route
+              path={`/users/:id`}
+              render={props => (
+                <UserCard onGetUsersList={this.handleGetUsersList} {...props} />
+              )}
+            />
           </Switch>
         </Router>
       </Container>
