@@ -19,11 +19,15 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Link } from 'react-router-dom';
 import * as EmailValidator from 'email-validator';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 class UserCard extends React.Component {
   state = {
     user: {},
     anchorEl: null,
+    open: false,
     isLoaded: false,
     edit: false,
     errors: {
@@ -63,7 +67,7 @@ class UserCard extends React.Component {
     this.setState({ anchorEl: event.currentTarget });
   };
 
-  handleClose = () => {
+  handleCloseMenu = () => {
     this.setState({ anchorEl: null });
   };
 
@@ -81,7 +85,7 @@ class UserCard extends React.Component {
 
   handleClickEdit = () => {
     this.setState({ edit: true });
-    this.handleClose();
+    this.handleCloseMenu();
   };
 
   handleClickSave = () => {
@@ -109,6 +113,14 @@ class UserCard extends React.Component {
       },
       edit: false,
     });
+  };
+
+  handleClickOpenDialog = () => {
+    this.setState({ open: true });
+  };
+
+  handleCloseDialog = () => {
+    this.setState({ open: false });
   };
 
   validate = (email, name, gender) => {
@@ -181,15 +193,41 @@ class UserCard extends React.Component {
                 <Menu
                   anchorEl={this.state.anchorEl}
                   open={open}
-                  onClose={this.handleClose}
+                  onClose={this.handleCloseMenu}
                 >
                   <MenuItem onClick={this.handleClickEdit}>Edit</MenuItem>
-                  <Link
-                    to="/"
-                    style={{ textDecoration: 'none', color: 'black' }}
+                  <MenuItem onClick={this.handleClickOpenDialog}>
+                    Delete
+                  </MenuItem>
+                  <Dialog
+                    open={this.state.open}
+                    onClose={this.handleCloseDialog}
+                    aria-labelledby="alert-dialog-title"
                   >
-                    <MenuItem onClick={this.handleClickDelete}>Delete</MenuItem>
-                  </Link>
+                    <DialogTitle id="alert-dialog-title">
+                      {`Are you sure you want to delete user ${this.state.user.email}?`}
+                    </DialogTitle>
+                    <DialogActions>
+                      <Button
+                        onClick={this.handleCloseDialog}
+                        color="primary"
+                        autoFocus
+                      >
+                        Disagree
+                      </Button>
+                      <Link
+                        to="/"
+                        style={{ textDecoration: 'none', color: 'black' }}
+                      >
+                        <Button
+                          onClick={this.handleClickDelete}
+                          color="primary"
+                        >
+                          Agree
+                        </Button>
+                      </Link>
+                    </DialogActions>
+                  </Dialog>
                 </Menu>
               </>
             }
