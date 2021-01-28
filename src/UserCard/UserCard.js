@@ -22,6 +22,7 @@ import * as EmailValidator from 'email-validator';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class UserCard extends React.Component {
   state = {
@@ -179,7 +180,7 @@ class UserCard extends React.Component {
   render() {
     const open = Boolean(this.state.anchorEl);
     if (!this.state.isLoaded) {
-      return <div>Loading...</div>;
+      return <CircularProgress />;
     } else {
       return (
         <Card>
@@ -300,7 +301,7 @@ class UserCard extends React.Component {
                 </Button>
                 <Button
                   variant="contained"
-                  color="default"
+                  color="primary"
                   size="small"
                   startIcon={<SaveIcon />}
                   onClick={this.handleClickSave}

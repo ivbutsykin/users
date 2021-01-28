@@ -154,7 +154,11 @@ class CreateUserForm extends React.Component {
         <Grid item xs={12}>
           <Grid container justify="center">
             <Grid item>
-              <Button variant="contained" onClick={this.handleClick}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.handleClick}
+              >
                 Add
               </Button>
             </Grid>
