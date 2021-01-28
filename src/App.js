@@ -1,9 +1,9 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import UsersList from './UsersList/UsersList';
 import CreateUserForm from './CreateUserForm/CreateUserForm';
 import UserCard from './UserCard/UserCard';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 class App extends React.Component {
   state = {

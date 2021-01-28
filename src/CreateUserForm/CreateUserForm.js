@@ -1,4 +1,5 @@
 import React from 'react';
+import * as EmailValidator from 'email-validator';
 import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -7,7 +8,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
-import * as EmailValidator from 'email-validator';
 
 class CreateUserForm extends React.Component {
   state = {
@@ -57,9 +57,7 @@ class CreateUserForm extends React.Component {
       },
     });
 
-    email =
-      EmailValidator.validate(email) &&
-      !this.props.users.some(user => user.email === email);
+    email = this.validateEmail(email);
     name = this.validateName(name);
     gender = this.validateGender(gender);
 
@@ -85,6 +83,13 @@ class CreateUserForm extends React.Component {
     }
     return true;
   };
+
+  validateEmail(email) {
+    return (
+      EmailValidator.validate(email) &&
+      !this.props.users.some(user => user.email === email)
+    );
+  }
 
   validateName(name) {
     const re = /^[A-Za-z\s]+$/;
