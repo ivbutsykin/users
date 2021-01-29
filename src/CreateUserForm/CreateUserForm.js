@@ -31,6 +31,7 @@ class CreateUserForm extends React.Component {
         this.state.fields.gender
       )
     ) {
+      this.props.onServerStatusChange(true, true, 'Success!');
       this.props.onUserCreate(this.state.fields);
       this.setState({
         fields: {
@@ -39,6 +40,8 @@ class CreateUserForm extends React.Component {
           gender: '',
         },
       });
+    } else {
+      this.props.onServerStatusChange(false, true, 'Error!');
     }
   };
 

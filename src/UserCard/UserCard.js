@@ -81,7 +81,10 @@ class UserCard extends React.Component {
   handleClickDelete = () => {
     fetch(`http://localhost:8080/users/${this.props.match.params.id}`, {
       method: 'DELETE',
-    }).then(() => this.props.onGetUsersList());
+    })
+      .catch(() => this.props.onServerStatusChange(false, true, 'Error!'))
+      .then(() => this.props.onServerStatusChange(true, true, 'Success!'))
+      .then(() => this.props.onGetUsersList());
   };
 
   handleClickEdit = () => {
@@ -97,10 +100,13 @@ class UserCard extends React.Component {
         this.state.user.gender
       )
     ) {
+      this.props.onServerStatusChange(true, true, 'Success!');
       this.handlePatchUser(this.state.user);
       this.setState({
         edit: false,
       });
+    } else {
+      this.props.onServerStatusChange(false, true, 'Error!');
     }
   };
 

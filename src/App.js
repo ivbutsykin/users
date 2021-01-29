@@ -4,10 +4,16 @@ import Container from '@material-ui/core/Container';
 import UsersList from './UsersList/UsersList';
 import CreateUserForm from './CreateUserForm/CreateUserForm';
 import UserCard from './UserCard/UserCard';
+import AlertSnackbar from './AlertSnackbar/AlertSnackbar';
 
 class App extends React.Component {
   state = {
     users: [],
+    serverStatus: {
+      loading: false,
+      showNotifcation: false,
+      notificationMessage: '',
+    },
   };
 
   componentDidMount() {
@@ -31,6 +37,20 @@ class App extends React.Component {
     }).then(() => this.handleGetUsersList());
   };
 
+  handleServerStatusChange = (
+    loading,
+    showNotifcation,
+    notificationMessage
+  ) => {
+    this.setState({
+      serverStatus: {
+        loading: loading,
+        showNotifcation: showNotifcation,
+        notificationMessage: notificationMessage,
+      },
+    });
+  };
+
   render() {
     return (
       <Container maxWidth="sm">
@@ -40,6 +60,7 @@ class App extends React.Component {
               <UsersList users={this.state.users} />
               <CreateUserForm
                 onUserCreate={this.handleUserCreate}
+                onServerStatusChange={this.handleServerStatusChange}
                 users={this.state.users}
               />
             </Route>
@@ -50,11 +71,16 @@ class App extends React.Component {
                 <UserCard
                   users={this.state.users}
                   onGetUsersList={this.handleGetUsersList}
+                  onServerStatusChange={this.handleServerStatusChange}
                   {...props}
                 />
               )}
             />
           </Switch>
+          <AlertSnackbar
+            serverStatus={this.state.serverStatus}
+            onServerStatusChange={this.handleServerStatusChange}
+          />
         </Router>
       </Container>
     );
