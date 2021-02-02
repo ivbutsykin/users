@@ -24,6 +24,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+import { getUserById, updateUser } from '../api/users.service';
+
 class UserCard extends React.Component {
   state = {
     user: {},
@@ -43,9 +45,7 @@ class UserCard extends React.Component {
   }
 
   handleGetUser = async () => {
-    const response = await fetch(
-      `http://localhost:8080/users/${this.props.match.params.id}`
-    );
+    const response = await getUserById(this.props.match.params.id);
     const responseJson = await response.json();
     const data = await responseJson;
     this.setState({
@@ -55,13 +55,9 @@ class UserCard extends React.Component {
   };
 
   handlePatchUser = fields => {
-    fetch(`http://localhost:8080/users/${this.props.match.params.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(fields),
-    }).then(() => this.props.onGetUsersList());
+    updateUser(this.props.match.params.id, fields).then(() =>
+      this.props.onGetUsersList()
+    );
   };
 
   handleClick = event => {

@@ -51,6 +51,12 @@ class CreateUserForm extends React.Component {
     }));
   };
 
+  _handleChange = stateType => e => {
+    this.setState(prevState => ({
+      fields: { ...prevState.fields, [stateType]: e.target.value },
+    }));
+  };
+
   validate = (email, name, gender) => {
     this.setState({
       errors: {
@@ -114,7 +120,7 @@ class CreateUserForm extends React.Component {
                 <Input
                   value={this.state.fields.email}
                   error={this.state.errors.email}
-                  onChange={e => this.handleChange(e, 'email')}
+                  onChange={this._handleChange('email')}
                 ></Input>
               </FormControl>
               <FormHelperText>user@example.com</FormHelperText>
